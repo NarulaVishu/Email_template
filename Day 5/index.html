@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation - SUNDAYS</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background-color: #fdf4e7;
+      color: #000;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    /* Container */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin-bottom: 40px;
+    }
+
+    .title {
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 48px;
+      line-height: 1.1;
+    }
+
+    /* Progress Tracker */
+    .progress-container {
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 64px;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .progress-line {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background-color: #000;
+      z-index: 1;
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #000;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-circle.active {
+      background-color: #f8d448;
+      border-color: #f8d448;
+    }
+
+    .step-labels {
+      display: flex;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .step-label {
+      width: 80px;
+      font-size: 14px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .step-date {
+      color: #666;
+    }
+
+    /* Order Info */
+    .order-info {
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .order-number, .view-order {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    /* Order Card */
+    .order-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .product-section {
+      padding: 24px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .product {
+      display: flex;
+      gap: 24px;
+    }
+
+    .product-image {
+      width: 96px;
+      height: 96px;
+      flex-shrink: 0;
+    }
+
+    .product-details h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .shipping-info {
+      display: flex;
+      align-items: center;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .shipping-info svg {
+      margin-right: 8px;
+    }
+
+    .product-price {
+      color: #666;
+    }
+
+    /* Order Summary */
+    .summary-section {
+      padding: 24px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .summary-label {
+      color: #666;
+      font-size: 18px;
+    }
+
+    .summary-value {
+      font-size: 18px;
+    }
+
+    .total-row {
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    /* Shipping and Payment */
+    .shipping-payment {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      color: #666;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .address-line, .payment-info {
+      margin-bottom: 4px;
+    }
+
+    .address-name {
+      font-weight: 500;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+    }
+
+    .payment-badge {
+      background-color: #2671f9;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-right: 12px;
+      font-weight: 700;
+    }
+
+    /* Text Updates */
+    .text-updates {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f5f5f5;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .text-updates h3 {
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .text-updates p {
+      margin-bottom: 8px;
+    }
+
+    .signup-link {
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .shipping-payment {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      
+      .shipping-address, .payment-method-container {
+        width: 48%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="logo">NARULA'S</h1>
+      <h2 class="title">We're fetching your order.</h2>
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-container">
+      <div class="progress-steps">
+        <div class="progress-line"></div>
+        <div class="step-circle active">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div class="step-circle"></div>
+        <div class="step-circle"></div>
+      </div>
+      <div class="step-labels">
+        <div class="step-label">
+          <div class="step-title">Order<br>Placed</div>
+          <div class="step-date">March 13, 2025</div>
+        </div>
+        <div class="step-label">
+          <div class="step-title">Shipping</div>
+        </div>
+        <div class="step-label">
+          <div class="step-title">Delivery</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Info -->
+    <div class="order-info">
+      <div class="order-header">
+        <div class="order-number">Order #SMLS65</div>
+        <a href="#" class="view-order">View Your Order</a>
+      </div>
+
+      <!-- Order Card -->
+      <div class="order-card">
+        <!-- Product -->
+        <div class="product-section">
+          <div class="product">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1ZrzJfc-dlUBMXYpZv-lnK2vOuidrc0hdxg&s" alt="Perfume" class="product-image">
+            <div class="product-details">
+              <h3>Wildstone Hydra Energy Perfume</h3>
+              <div class="shipping-info">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12a9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9Z"></path>
+                  <path d="m9 17 6-10"></path>
+                </svg>
+                Ships every 19 days
+              </div>
+              <div class="product-price">72 oz • $109.00 ($2.87/meal)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="summary-section">
+          <div class="summary-row">
+            <div class="summary-label">Subtotal</div>
+            <div class="summary-value">Rs 520</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-label">Shipping</div>
+            <div class="summary-value">FREE</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-label">Estimated Taxes</div>
+            <div class="summary-value">Rs 150</div>
+          </div>
+          <div class="summary-row total-row">
+            <div>Total</div>
+            <div>Rs 670</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping and Payment -->
+      <div class="shipping-payment">
+        <div class="shipping-address">
+          <h3 class="section-title">Shipping Address</h3>
+          <p class="address-line address-name">Hillia Naran</p>
+          <p class="address-line">600 Sector</p>
+          <p class="address-line">San Francisco, CA</p>
+          <p class="address-line">94111</p>
+        </div>
+        <div class="payment-method-container">
+          <h3 class="section-title">Payment Method</h3>
+          <div class="payment-method">
+            <div class="payment-badge">AMEX</div>
+            <span>*6500</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Updates -->
+      <div class="text-updates">
+        <h3>Get Order Updates By Text</h3>
+        <p>Receive real-time information and track your order from your phone.</p>
+        <a href="#" class="signup-link">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
